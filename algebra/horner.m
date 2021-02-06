@@ -1,5 +1,6 @@
 
-
+# x puede ser un array o un valor individual
+# coef tiene que ser un array de preferencia con 2 elementos
 
 function [output] = horner(x, coef)
   output = [];

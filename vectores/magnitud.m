@@ -1,7 +1,9 @@
 
+
+
 function output = magnitud(vector)
 
-  if numel(vector) <= 3 && numel(vector) >= 2
+  if numel(vector) <= 3 && numel(vector) >= 2 #Un vector solo puede ser R2 o R3
 
     s_sqrd = 0
 
@@ -11,7 +13,7 @@ function output = magnitud(vector)
 
     endfor
 
-    s_sqrd = sqrt(s_sqrd)
+    output = sqrt(s_sqrd)
 
   else
 
