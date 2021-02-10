@@ -1,5 +1,9 @@
 
-
+## formato de vectores validos, ejemplos
+##   [3-5i, 2 + 7i, -1+2i]
+##   [6 + 1i, 4 + 5i, 3 - 4i]
+##   [3,-5,2,4]
+##   [-2,-1,-7,9]
 
 function output = magnitud(vector)
 
