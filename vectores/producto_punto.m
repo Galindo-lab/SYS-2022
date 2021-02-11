@@ -7,7 +7,7 @@
 
 function output = producto_punto(u,v)
 
-  ## Formula qe se aplica para calclar el producto punto
+  ## Formula que se aplica para calcular el producto punto:
   ## ___
   ## \     ____
   ## /__   u(k) * v(k)
@@ -26,7 +26,7 @@ function output = producto_punto(u,v)
     output = r
   else
     error(sprintf(
-              "los arrays son de diferente tamaño:\n - u: %d\n - v: %d"
+              "los vectores son de diferente dimensión:\n - u: %d\n - v: %d"
                 ,numel(u), numel(v)))
   endif
 endfunction
