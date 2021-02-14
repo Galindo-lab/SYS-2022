@@ -5,7 +5,7 @@
 ##   [3,-5,2,4]
 ##   [-2,-1,-7,9]
 
-function output = producto_punto(u,v)
+function producto_p = producto_punto(u,v)
 
   ## Formula que se aplica para calcular el producto punto:
   ## ___
@@ -23,7 +23,7 @@ function output = producto_punto(u,v)
 
     endfor
 
-    output = r
+    producto_p = sqrt(r)
   else
     error(sprintf(
               "los vectores son de diferente dimensión:\n - u: %d\n - v: %d"
