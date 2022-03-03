@@ -12,7 +12,7 @@ def tabla(xt,ht):
             foo[i][j] = a * b
     return foo
         
-def hamilton(m):
+def suma_diagonales(m):
     h,w = len(m), len(m[0])
     foo = array(h+w-1)
     for i in range(h):
@@ -22,8 +22,8 @@ def hamilton(m):
     foo.insert(0,0)
     return foo
 
-xt = [2,2,2,2,1,1,1,1]
-ht = [1,1,1,1,1,1,1,1]
+xt = [1,2,3]
+ht = [-2,1,-1,-1]
 fs = 4
 
 a = tabla(ht,xt)
