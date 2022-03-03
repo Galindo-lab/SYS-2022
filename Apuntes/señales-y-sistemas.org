@@ -1,0 +1,416 @@
+
+#+TITLE:  Señales Y Sistemas
+#+AUTHOR: Luis Eduardo Galindo Amaya
+# [2022-02-01 mar]
+
+#+LANGUAGE: es
+
+#+OPTIONS: toc:2 \n:t
+
+#+LATEX_HEADER: \usepackage[AUTO]{babel}
+#+LATEX_HEADER: \usepackage{svg}
+#+LATEX_HEADER: \usepackage{fancybox,framed}
+
+#+LATEX_COMPILER: pdflatex
+#+date: \today
+
+#+MACRO: pagebreak @@latex: \pagebreak @@ 
+#+MACRO: vfill @@latex: \vfill@@ 
+#+MACRO: clearpage @@latex: \clearpage @@ 
+
+{{{clearpage}}}
+
+* Definiciones
+** Señal
+Una señal una representación matemática de un fenómeno físico (en su mayoría) que se puede medir, y esta en función de una o mas variables independientes (generalmente tiempo o el espacio).
+
+*** Señales En Fenómenos Físicos
+Corresponden a los fenómenos de podemos medir con una escala: 
+
++ Voltaje, Intensidad eléctrica, Resistencia
++ Presión atmosférica, Temperatura, Caudal
++ Distancia, Velocidad, Aceleración 
+
+*** Señales No Físicas
+Por otro lado las señales no físicas corresponden a las señales que no las podemos medir pero que sabemos que son dependientes de múltiples variables, por lo que se puede representar matemáticamente:
+
++ Paridad peso-dolar
++ valor del bitcoin
++ Inflación
+
+*** Ejemplos de _NO_ Señales
+En estos casos a pesar de que podemos entender estos conceptos, no es posible describirlos matemáticamente por lo tanto no podemos mostrarlos como señales:
+
++ Sentimientos
++ Respeto
++ Libertad
+
+** Sistema
+Un sistema es una representación matemática de una entidad que ante el estimula de una o varias magnitudes (señales de entrada) ofrece como respuesta otras magnitudes (señales de salida).
+
+#+BEGIN_SRC 
+
+            Señal de   +---------+  Señal de
+ Exitacion ----------> | Sistema | ----------> Respuesta
+            Entrada    +---------+  Salida
+
+#+END_SRC
+
+** Señales o sistemas Deterministicos
+Se refiere a que puede ser especificada completamente para cualquier instante de tiempo mediante funciones o sistemas de ecuaciones.
+
+** Señales O Sistemas Estocásticos
+Se refiere a que toma valores aleatorios y solo se puede caracterizar estadísticamente. 
+
+Las señales y sistemas en condiciones de operación real se consideran estocásticas
+
+#+attr_latex: :width 5cm
+#+caption: Señal + Ruido = Señal Estocastica.
+[[file:img/TelekomAustriaAktie.png]]
+
+
+* Clasificación De Señales
+** Señal Continua
+Si la variable independiente puede tomar cualquier valor real decimos que la señal es continua y la denotamos como \(x(n)\). (0.5,0.7,1,...)
+
+#+attr_latex: :width 4cm
+[[file:img/continua.jpg]]
+
+** Señal Discreta
+Sí la variable independiente puede tomar solo algunos valores reales decimos que la señal es discreta y la denotamos como \(x[n]\). (0,1,2,3,4...)
+
+#+attr_latex: :width 4cm
+[[file:img/discreta.jpg]]
+
+** Señal Análoga
+Si la _variable dependiente_ puede tomar un valor de un _conjunto infinito_ de valores decimos que es análoga y la denotamos como \(x(n)\).
+
+#+attr_latex: :width 4cm
+[[file:img/analogica.jpg]]
+
+** Señal Digital
+Si la _variable dependiente_ puede tomar un valor de un conjunto infinito de valores decimos que es digital \(X(n)\)
+
+#+attr_latex: :width 4cm
+[[file:img/digital.jpg]]
+
+** Combinacionse de señales
+Una señal puede ser análoga discreta, continua digital, análoga continua o discreta digital. Una señal _No_ puede ser análoga digital o continua discreta.
+
+| a(b) |   | Análoga Continua |
+| a[b] |   | Análoga Discreta |
+| A(b) |   | Continua Digital |
+| A[b] |   | Discreta Digital |
+
+Cuando la variable independiente es el tiempo se dice que la señal es en tiempo continuo o tiempo discreto.
+
+| x(L) |   | Señal Análoga En Tiempo Continuo |
+| X[L] |   | Señal Digital En Tiempo Discreto |
+
+** Señal Periodica O Aperiodica 
+Una señal es periodica si los valores que toma se repiten de forma ciclica. Matematicamente podemos expresarlo de la siguiente forma: una señal \(x(t)\) (o \(x[n]\)) es periodica con periodo 'T' (o 'N') sí existe un valor de 'T' (o 'N') para el que se cumpla:
+
+\[ \begin{aligned}
+x(t) &= x(t+T)~\forall~t \\
+(x[n] &= x[n+N] \lor n )
+\end{aligned} \] 
+
+El menot valor de 'T' (o 'N') para el que se cumple esta condición se denomina _Periodo Fundamental_ y se denota como 'T_0' (o 'N_0'). La relación entre el periodo y la frecuencia 'f' se da por la ecuación: \( f = \frac{1}{T} \) en Hz, o \(2\pi f = \frac{2\pi}{t}\) en rad/s. [fn:video-onda]
+
+
+Por ultimo se dice que una señal es _Aperiódica_ cuando no tiene periodo.
+
+[fn:video-onda] Estos conceptos los explica muy bien Quantum Fracture: https://youtu.be/rKf92Vgx2ag
+
+** Señal Real O Compleja
+Una señal sí toma valores del cuerpo de los números reales \(\mathbb{R}\). Sí toma valores del cuerpo de los números complejos \(\mathbb{C}\). se considera compleja.
+
+Salvo que se especifique lo contrario, siempre que nos refiramos a una señal sin especificar si es real o compleja entenderemos que es una señal real.
+
+Para trabajar con señales complejas, es requisito saber usar los números complejos. A continuacion la definición matematica de un numero complejo[fn:conjugado]:
+
+\[ \begin{aligned}
+  x(t) &= Re\{x(t)\} + j~Jm\{x(t)\} \\
+       &= \frac{x(t) + x^*(t)}{2} + j \frac{x(t)-x^*(t)}{2j}
+\end{aligned} \]
+
+[fn:conjugado] la operacion \(x^*\) se refiere al conjugado, del complejo.
+
+** Señal Par O Impar
+una señal x(t) o x[n] es *par* si se 'refleja' en el eje vertical u ordenadas 
+
+\[ \begin{aligned}
+   x(t) &= x(-t) \\
+   x[n] &= x[-n] 
+\end{aligned} \]
+
+La señal tiene los mismos valores para el lado positivo o negativo |t| o |n|. Una señal \(x(t)\) o \(x[n]\) es *impar* si se cumple:
+
+\[ \begin{aligned}
+   x(t) &= -x(-t) \\
+   x[n] &= -x[-n]
+\end{aligned} \]
+
+Una señal impar debe de ser necesariamente 0 para 't=0'  o 'n=0'.
+
+[[file:img/par-impar.png]]
+
+* Clasificación de Sistemas
+
+https://youtu.be/v67k5LL2ZUQ
+
+** Con Memoria O Sin Memoria
+Un sistema no tine memoria cuando la salida en un determinado instante no depende de la entrada. Se dice que el sistema tiene memoria cuando incumple esta propiedad.
+
+*** Ejemplo *Sin memoria*
+
+#+BEGIN_SRC 
+         +-----------------+
+ x(t) -> | y(t) = [x(t)]^2 | -> y(t)
+         +-----------------+
+#+END_SRC
+
+|---+----+----+-------+----|
+|   |  t |  x | y=x^2 |  y |
+| / | <> | <> | <>    | <> |
+|---+----+----+-------+----|
+|   |  0 |  3 | (3)^2 |  9 |
+|   |  1 |  5 | (5)^2 | 25 |
+|   |  2 |  2 | (2)^2 |  4 |
+|   |  3 |  4 | (4)^2 | 16 |
+|   |  4 |  1 | (1)^2 |  1 |
+|   |  5 |  0 | (0)^2 |  0 |
+|   |  6 |  3 | (3)^2 |  9 |
+|---+----+----+-------+----|
+
+** Causal O No Causal
+Se dice que un sistema es *causal* cuando la salida en un determinado instante _*No* depende de valores futuros de la entrada_. Se dice que el sistema es no causal cuando incumple esta propiedad.
+
+Cuando la variable independiente de las señales es el tiempo todos los sistemas fisicamente realizables son Causales.
+
+*** Ejemplo Causal
+
+#+BEGIN_SRC 
+         +---------------+
+ x(t) -> | y(t) - x(t-1) | -> y(t)
+         +---------------+
+#+END_SRC
+
+|---+----+----+----------------+--------|
+|   |  t |  x | y=x_t-x_{t-1}  |      y |
+| / | <> | <> | <>             |     <> |
+|---+----+----+----------------+--------|
+|   |  0 |  2 | (2) - (/null/) | /null/ |
+|   |  1 |  4 | (4) - (2)      |      2 |
+|   |  2 |  6 | (6) - (4)      |      2 |
+|   |  3 |  5 | (5) - (6)      |     -1 |
+|   |  4 |  3 | (3) - (5)      |     -2 |
+|   |  5 |  1 | (1) - (3)      |     -2 |
+|   |  6 |  0 | (0) - (1)      |     -1 |
+|---+----+----+----------------+--------|
+
+*** Ejemplo No Causal
+
+#+BEGIN_SRC 
+         +----------------------+
+ x[t] -> | y[n] = x[n] - x[n+1] | -> y[n]
+         +----------------------+
+#+END_SRC
+
+|---+----+----+---------------+-------|
+|   |  n |  x | y=x_n-x_{n-1} |     y |
+| / | <> | <> | <>            |    <> |
+|---+----+----+---------------+-------|
+|   |  0 |  2 | (2) - (4)     |    -2 |
+|   |  1 |  4 | (4) - (6)     |    -2 |
+|   |  2 |  6 | (6) - (5)     |     1 |
+|   |  3 |  5 | (5) - (3)     |     2 |
+|   |  4 |  3 | (3) - (1)     |     2 |
+|   |  5 |  1 | (1) - (0)     |     1 |
+|   |  6 |  0 | (0) - (/???/) | /???/ |
+|---+----+----+---------------+-------|
+
+** TODO Invertible O No Invertible
+Se dice que un sistema es invertible cuando siempre es posible recuperar la entrada al sistema conociendo la salida. Se dice que el sistema es no es invertible cuando incumple esta propiedad.
+
+*** Ejemplo invertible
+|---+----+----+-----------+---+----+--------+-----------|
+|   |  t |  x | y=x_{t-1} |   |  t |      y | x=y_{t-1} |
+| / | <> | <> |        <> |   | <> |     <> |        <> |
+|---+----+----+-----------+---+----+--------+-----------|
+|   |  0 |  2 |    /null/ |   |  0 | /null/ |         2 |
+|   |  1 |  4 |         2 |   |  1 |      2 |         4 |
+|   |  2 |  6 |         4 |   |  2 |      4 |         6 |
+|   |  3 |  5 |         6 |   |  3 |      6 |         5 |
+|   |  4 |  3 |         5 |   |  4 |      5 |         3 |
+|   |  5 |  1 |         3 |   |  5 |      3 |         1 |
+|   |  6 |  0 |         1 |   |  6 |      1 |         ? |
+|---+----+----+-----------+---+----+--------+-----------|
+
+*** Ejemplo no invertible
+|---+----+----+-------+---+----+----+------------------|
+|   |  n |  x | y=x^2 |   |  n |  y | \(x = \sqrt{y}\) |
+| / | <> | <> |    <> |   | <> | <> | <>               |
+|---+----+----+-------+---+----+----+------------------|
+|   |  0 | -3 |     9 |   |  0 |  9 | \pm 3            |
+|   |  1 | -2 |     4 |   |  1 |  4 | \pm 2            |
+|   |  2 | -1 |     1 |   |  2 |  1 | \pm 1            |
+|   |  3 |  0 |     0 |   |  3 |  0 | 0                |
+|   |  4 |  1 |     1 |   |  4 |  1 | \pm 1            |
+|   |  5 |  2 |     4 |   |  5 |  4 | \pm 2            |
+|   |  6 |  3 |     9 |   |  6 |  9 | \pm 3            |
+|---+----+----+-------+---+----+----+------------------|
+
+** TODO Estable O Inestable
+Aunque existen diversos criterios de estabilidad, el más utilizado en el estudio de sistemas es el denominado "entrada acotada, salida acotada" ("bounded Input Bounded output" o *BIBO*). Este criterio establese si para cualquier entrada acotada la salida está acotada.
+
+** TODO Lineal O No Lineal
+Un sistema es lineal si cumple con las pripiedades de aditividad y homogeneidad. Si no cumple ambas condici, el sistema no es lineal.
+
+- Aditividad :: \(\rightarrow f(x+y) = f(x) + f(y)\)
+
+- Homogeneidad :: \(\rightarrow f(ax) = a f(x)\)
+
+https://youtu.be/v67k5LL2ZUQ?t=1074
+
+** Variante O Invariante En El Tiempo
+Un sistema es invariante en el tiempo si el comportamiento del sistema no depende del instante en el que se le aplique la exitación, caso contrario el sistema es variante en el tiempo.
+
+https://youtu.be/v67k5LL2ZUQ?t=1774
+
+* Señales de Interés
+** Definición
+Es una señal teorica utilizada en el estudio de señales y sistemas. Aunque casi no se encuentran en la realidad, su conocimiento y estudio en lo teorico resulta muy util.
+
+** TODO [[https://youtu.be/qffmIh0jOJ8?t=70][Pulso unitario]]
+# TODO
+#  - Falta diagrama
+
+\[
+\delta(t) = \begin{cases}
+\infty & \forall t = 0 \\
+0 & \forall t \not = 0
+\end{cases}
+\]
+
+La función delta de Dirac \(\delta(t)\), tambien conocida como funcion impulso se emplea para modelar fenomenos fisicos en un tiempo continuo de corta duracion. 
+
+*Importante*: Aunque la amplitud es infinita, su área es igual a 1.
+
+** TODO [[https://youtu.be/qffmIh0jOJ8?t=241][Impulso Unitario]]
+# TODO
+# - Falta diagrama
+\[
+\delta[n] = \begin{cases}
+1 & \text{sí}~n = 0 \\
+0 & \text{sí}~n \not = 0
+\end{cases}
+\]
+
+La función delta de Kronecker, \(\delta[n]\), Es el equivalente en tiempo discreto de la delta de Dirac.
+
+|---+----+---------------|
+|   |  n | \(\delta[n]\) |
+| / | <> |            <> |
+|---+----+---------------|
+|   | -2 |             0 |
+|   | -1 |             0 |
+|   |  0 |             1 |
+|   |  1 |             0 |
+|   |  2 |             0 |
+|---+----+---------------|
+
+** TODO [[https://youtu.be/qffmIh0jOJ8?t=295][Escalón Unitario]]
+# TODO
+# - Falta diagrama
+
+\[ \begin{aligned}
+  u(t) = \begin{cases}
+    1 & \forall t \geq 0 \\
+    0 & \forall t < 0
+  \end{cases} && &&
+  u[n] = \begin{cases}
+    1 & \forall n \geq 0 \\
+    0 & \forall n < 0
+  \end{cases} \\
+\end{aligned} \]
+
+El escalón unitrio simbolia pasae de un estado de interés relevante, simboliza pasar de un estado apagado o inactivo (0) a un estado activo o encendido.
+
+*Importante*: En el tiempo discreto hay espacios donde el escalón unitario no tiene valor.
+
+** TODO [[https://youtu.be/qffmIh0jOJ8?t=398][Rampa Unitaria]]
+# TODO
+# - Falta diagrama
+
+\[ \begin{aligned}
+  tu(t) = \begin{cases}
+    t & \forall t \geq 0 \\
+    0 & \forall t < 0
+  \end{cases} && &&
+  nu[n] = \begin{cases}
+    n & \forall n \geq 0 \\
+    0 & \forall n < 0
+  \end{cases} \\
+\end{aligned} \]
+
+La rampa simboliza pasar de un estado inactivo (0) a un estado activo paulatinamente (t) o [n].
+
+*Importante*: En el tiempo discreto hay espacios donde la rampa unitaria no tiene valor.
+
+** TODO [[https://youtu.be/qffmIh0jOJ8?t=536][Potencia unitaria]]
+# TODO
+# - Falta diagrama
+
+\[ \begin{aligned}
+  t^au(t) = \begin{cases}
+    t^a & \forall t \geq 0 \\
+    0 & \forall t < 0
+  \end{cases} && &&
+  n^au[n] = \begin{cases}
+    n^a & \forall n \geq 0 \\
+    0 & \forall n < 0
+  \end{cases} \\
+\end{aligned} \]
+
+Para representar señales de grado n, contamos con la potencia unitaria. esta señal contempla valores enteros de 'a' mayores 1. Por lo general se considera como un caso practico \(a = 2\).
+
+*Importante*: En el tiempo discreto hay espacios donde la potencia no tiene valor.
+
+** TODO [[https://youtu.be/qffmIh0jOJ8?t=621][Senoide Unitaria]]
+# TODO
+# - Falta diagrama
+
+\[ \begin{aligned}
+  \sin(t)u(t) = \begin{cases}
+    \sin(t) & \forall t \geq 0 \\
+    0 & \forall t < 0
+  \end{cases} && &&
+  \sin[n]u[n] = \begin{cases}
+    \sin[n] & \forall n \geq 0 \\
+    0 & \forall n < 0
+  \end{cases} \\
+\end{aligned} \]
+
+Para representar señal del tipo senoide, se utiliza su representación matemática seguida del escalón unnitario.
+
+*Importante*: En el tiempo discreto hay espacios donde el senoide unitario no tiene valor.
+
+* Operaciones con señales
+** Descripción
+Debido a que una señal es una representación matemática de un fenómeno, existe un conjunto de operaciones disponibles para realizar entre señales de ser necesario.
+
+- [[https://youtu.be/qffmIh0jOJ8][Suma y Resta]]
+- [[https://youtu.be/qffmIh0jOJ8?t=1146][Multiplicación]]
+- [[https://youtu.be/qffmIh0jOJ8?t=1267][Multiplicación Escalar]]
+
+
+* Recursos utiles :noexport:
+** Paginas
+https://uapa.cuaieed.unam.mx/sites/default/files/minisite/static/f7ca9e2a-30de-4211-a98d-43df5025d462/Sistemas_senales/index.html
+
+http://blog.espol.edu.ec/telg1001/senales-pares-e-impares/
+
+** Videos
+[[https://youtu.be/ntFMk9Q1O7o][Introducción a Señales y Sistemas]]
+
