@@ -5,7 +5,7 @@ def array(size):
 def matrix(w,h):
     return [array(w) for y in range(h)] 
 
-def tabla(xt,ht):
+def outer(xt,ht):
     foo = matrix(len(xt), len(ht))
     for i, a in enumerate(ht):
         for j, b in enumerate(xt):
@@ -21,7 +21,7 @@ def suma_diagonales(m):
     return foo
 
 def convolucion(xt,ht,fs):
-    foo = suma_diagonales(tabla(ht,xt))
+    foo = suma_diagonales(outer(ht,xt))
     foo = list(map(lambda x: x/fs,foo))
     foo.append(0)
     foo.insert(0,0)
