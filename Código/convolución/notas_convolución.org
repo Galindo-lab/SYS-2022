@@ -1,7 +1,219 @@
 
-#+TITLE:  Notas Convolución
-#+DATE:   <2022-03-03 jue>
-#+AUTHOR: Galindo
-#+EMAIL:  galindo@galindo-HP-Notebook
+#+TITLE:    Convolución Discreta
+#+DATE:     2022-03-03 jue
+#+AUTHOR:   Luis E. Galindo Amaya
+#+EMAIL:    egalindo54@uabc.edu.mx
 
+#+LANGUAGE: es
+#+options: toc:2 num:1
+
+#+LATEX_HEADER: \usepackage[spanish]{babel}
+
+\vfill
+#+BEGIN_CENTER
+https://github.com/Galindo-lab
+#+END_CENTER
+\pagebreak
+
+* Variables
+- 'xt', 'ht' :: arreglos que representan el valor de la señal.
+- 'fs' :: "frequency sampling" de la función. 
+
+
+* Crear Arreglo Y Matrices
+Estas funciones son bastante explicativas, así que me voy a ahorrar la explicación y dejaré directamente el código.
+
+#+BEGIN_SRC python :wrap codebox
+def array(size):
+    return [0 for x in range(size)] 
+
+def matrix(w,h):
+    return [array(w) for y in range(h)] 
+#+END_SRC
+
+* Crear la tabla
+Para el método de tablas discretas es necesario crear una tabla que sea la multiplicación de los valores iniciales por los elementos individuales del otro en teoría debería tener el siguiente comportamiento sobre los parameros ingresados:
+
+\[
+A = (a,b,c) ~ ~ ~ B = (x,y,z) 
+\]
+
+\[outer(A,B) =  \begin{bmatrix}
+ax &  ay &  az \\
+bx &  by &  bz \\
+cx &  cy &  cz \\
+\end{bmatrix} \]
+
+#+BEGIN_SRC python
+def outer(xt,ht):
+    foo = matrix(len(xt), len(ht))
+    for i, a in enumerate(ht):
+        for j, b in enumerate(xt):
+            foo[i][j] = a * b
+    return foo
+#+END_SRC
+
+* Sumar Diagonales
+La parte más molesta del método de tablas discretas es sin duda la suma de diagonales, no es difícil, pero es la parte donde se es más propensa a errores. 
+Cuando sumamos las diagonales es importante tener en cuenta que debemos sumar también las diagonales de la matriz extendida
+
+#+CAPTION: Las diagonales se extienden fuera de la matriz
+#+NAME:    diagonales
+[[file:img/diagonales.png]]
+
+Implementar una solución para este problema requiere verificar si un contador está fuera del rango de la matriz, en la 'Figura [[diagonales]]' seria de 0 hasta 8, Es posible simplificar este proceso, podemos aprovecharnos de que conocemos el tamaño del arreglo resultante de este proceso [fn:nota]:
+
+\[
+\text{Longitud} = \text{Ancho} + \text{Largo} - 1 
+\]
+
+Con esta información podemos crear un arreglo que tiene la cantidad de diagonales exactas, ahora en vez de movernos entre los datos y almacenarlos en el arreglo podemos mover el arreglo y sumar el elemento en la tabla al su posición correspondiente en el arreglo:
+
+#+BEGIN_SRC 
+# Donde 'i' es fila y 'j' columnas.
+foo[j+i] += m[i][j]
+#+END_SRC
+
+Como cada fila que bajamos la posición del arreglo se incrementa en uno solo basta con sumar el número de columna al índice de nuestro arreglo resultante.
+
+#+BEGIN_SRC python
+def suma_diagonales(m):
+    h,w = len(m), len(m[0])
+    foo = array(h+w-1)
+    for i in range(h):
+        for j in range(w):
+            foo[j+i] += m[i][j]
+    return foo
+#+END_SRC
+
+El resultado de la función es un arreglo donde están las sumas de todas las diagonales, sin tener que usar ningún condicional.
+
+[fn:nota] El cual es igual a la misma cantidad de diagonales.
+
+* Final
+Por último únicamente es necesario dividir los valores de las diagonales entre la frecuencia y juntar las funciones en un método más sencillo. 
+
+#+BEGIN_SRC python
+def convolucion(xt,ht,fs):
+    foo = suma_diagonales(outer(ht,xt))
+    foo = list(map(lambda x: x/fs,foo))
+    foo.append(0)
+    foo.insert(0,0)
+    return foo
+#+END_SRC
+\pagebreak
+
+* Ejercicio 1
+** Valore de entrada
+\[ \begin{aligned}
+x[n] &= \{2,2,2,2,1,1,1,1\} \\
+h[n] &= \{1,1,1,1,1,1,1,1\} \\
+  fs &= 4 
+\end{aligned} \]
+
+** Resultados
+
+|   | Tiempo | Esperado | Obtenido |
+| / |        |          |          |
+|   |        |          |          |
+|   |   0.00 |     0.00 |     0.00 |
+|   |   0.25 |     0.50 |     0.50 |
+|   |   0.50 |     1.00 |     1.00 |
+|   |   0.75 |     1.50 |     1.50 |
+|   |   1.00 |     2.00 |     2.00 |
+|   |   1.25 |     2.25 |     2.25 |
+|   |   1.50 |     2.50 |     2.50 |
+|   |   1.75 |     2.75 |     2.75 |
+|   |   2.00 |     3.00 |     3.00 |
+|   |   2.25 |     2.50 |     2.50 |
+|   |   2.50 |     2.00 |     2.00 |
+|   |   2.75 |     1.50 |     1.50 |
+|   |   3.00 |     1.00 |     1.00 |
+|   |   3.25 |     0.75 |     0.75 |
+|   |   3.50 |     0.50 |     0.50 |
+|   |   3.75 |     0.25 |     0.25 |
+|   |   4.00 |     0.00 |     0.00 |
+
+\pagebreak
+
+* Ejercicio 2
+** Valore de entrada
+\[ \begin{aligned}
+x[n] &= \{1,1,1,1,2,2,2,2,1,1,1,1\} \\
+h[n] &= \{1,1,1,1,2,2,2,2\} \\
+  fs &= 4 
+\end{aligned} \]
+
+** Resultados
+|   | Tiempo | Esperado | Obtenido |
+| / |        |          |          |
+|   |        |          |          |
+|   |   0.00 |     0.00 |     0.00 |
+|   |   0.25 |     0.25 |     0.25 |
+|   |   0.50 |     0.50 |     0.50 |
+|   |   0.75 |     0.75 |     0.75 |
+|   |   1.00 |     1.00 |     1.00 |
+|   |  *1.25 |     1.25 |     1.75 |
+|   |  *1.50 |     1.50 |     2.50 |
+|   |   1.75 |     3.25 |     3.25 |
+|   |   2.00 |     4.00 |     4.00 |
+|   |   2.25 |     4.25 |     4.25 |
+|   |   2.50 |     4.50 |     4.50 |
+|   |   2.75 |     4.75 |     4.75 |
+|   |   3.00 |     5.00 |     5.00 |
+|   |   3.25 |     4.25 |     4.25 |
+|   |   3.50 |     3.50 |     3.50 |
+|   |   3.75 |     2.75 |     2.75 |
+|   |   4.00 |     2.00 |     2.00 |
+|   |   4.25 |     1.50 |     1.50 |
+|   |   4.50 |     1.00 |     1.00 |
+|   |   4.75 |     0.50 |     0.50 |
+|   |   5.00 |     0.00 |     0.00 |
+
+\pagebreak
+
+* Código
+
+#+BEGIN_SRC python
+  def array(size):
+      return [0 for x in range(size)] 
+
+  def matrix(w,h):
+      return [array(w) for y in range(h)] 
+
+  def outer(xt,ht):
+      foo = matrix(len(xt), len(ht))
+      for i, a in enumerate(ht):
+          for j, b in enumerate(xt):
+              foo[i][j] = a * b
+      return foo
+        
+  def suma_diagonales(m):
+      h,w = len(m), len(m[0])
+      foo = array(h+w-1)
+      for i in range(h):
+          for j in range(w):
+              foo[j+i] += m[i][j]
+      return foo
+
+  def convolucion(xt,ht,fs):
+      foo = suma_diagonales(outer(ht,xt))
+      foo = list(map(lambda x: x/fs,foo))
+      foo.append(0)
+      foo.insert(0,0)
+      return foo
+
+  # main -----
+
+  xt = [1,1,1,1,2,2,2,2,1,1,1,1]
+  ht = [1,1,1,1,2,2,2,2]
+  fs = 4
+
+  for t,v in enumerate(convolucion(xt,ht,fs)):
+      print( "%.2f %.2f"%(t/fs,v) )
+#+END_SRC
+
+#+BEGIN_CENTER
+Github link: https://n9.cl/2qw4t
+#+END_CENTER
 
