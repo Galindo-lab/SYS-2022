@@ -14,17 +14,15 @@ def outer(xt,ht):
         
 def suma_diagonales(m):
     h,w = len(m), len(m[0])
-    foo = array(h+w-1)
+    foo = array(h+w-1+2)        # el +2 es para los extremos, que deben ser 0
     for i in range(h):
         for j in range(w):
-            foo[j+i] += m[i][j]
+            foo[j+i+1] += m[i][j] # tiene que enpezar desde el elemento 1
     return foo
 
 def convolucion(xt,ht,fs):
     foo = suma_diagonales(outer(ht,xt))
     foo = list(map(lambda x: x/fs,foo))
-    foo.append(0)
-    foo.insert(0,0)
     return foo
 
 xt = [1,1,1,1,2,2,2,2,1,1,1,1]
